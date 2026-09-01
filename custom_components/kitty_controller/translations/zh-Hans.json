@@ -266,7 +266,7 @@
     },
     "update_rule_provider_service": {
       "name": "更新规则集合",
-      "description": "触发指定规则集合重新拉取订阅内容（PUT /providers/rules/{名称}）。",
+      "description": "触发指定规则集合重新拉取订阅内容（PUT /providers/rules/{name}）。",
       "fields": {
         "device_id": {
           "name": "实例",
@@ -280,7 +280,7 @@
     },
     "update_proxy_provider_service": {
       "name": "更新订阅",
-      "description": "触发指定代理集合重新拉取订阅内容（PUT /providers/proxies/{名称}）。",
+      "description": "触发指定代理集合重新拉取订阅内容（PUT /providers/proxies/{name}）。",
       "fields": {
         "device_id": {
           "name": "实例",
