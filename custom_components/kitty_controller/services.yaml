@@ -1,0 +1,180 @@
+reboot_core_service:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: kitty_controller
+
+filter_connection_service:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: kitty_controller
+    close_connection:
+      default: false
+      example: false
+      required: false
+      selector:
+        boolean:
+    host:
+      example: "netflix.com, youtube"
+      required: false
+      selector:
+        text:
+    src_hostname:
+      example: "192.168.1.1"
+      required: false
+      selector:
+        text:
+    des_hostname:
+      example: "210.61.187.240"
+      required: false
+      selector:
+        text:
+
+get_latency_service:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: kitty_controller
+    group:
+      example: "Proxy"
+      required: false
+      selector:
+        text:
+    node:
+      example: "Fast-01"
+      required: false
+      selector:
+        text:
+    url:
+      example: "http://www.gstatic.com/generate_204"
+      default: "http://www.gstatic.com/generate_204"
+      required: false
+      selector:
+        text:
+    timeout:
+      example: 5000
+      default: 5000
+      required: false
+      selector:
+        number:
+          min: 100
+          max: 10000
+          step: 100
+          mode: "box"
+
+dns_query_service:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: kitty_controller
+    domain_name:
+      example: "google.com"
+      required: true
+      selector:
+        text:
+    record_type:
+      example: "A"
+      default: "A"
+      required: false
+      selector:
+        text:
+
+get_rule_service:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: kitty_controller
+    rule_type:
+      example: "DomainSuffix"
+      required: false
+      selector:
+        text:
+    rule_payload:
+      example: "google.com"
+      required: false
+      selector:
+        text:
+    rule_proxy:
+      example: "DIRECT"
+      required: false
+      selector:
+        text:
+
+api_call_service:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: kitty_controller
+    api_endpoint:
+      example: "proxies/proxies_name"
+      required: true
+      selector:
+        text:
+    api_method:
+      example: "GET"
+      required: true
+      selector:
+        text:
+    api_params:
+      example: "{\"name\": \"Fast-01\"}"
+      required: false
+      selector:
+        text:
+    api_data:
+      example: "{\"data\": \"Some raw data\"}"
+      required: false
+      selector:
+        text:
+
+update_rule_provider_service:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: kitty_controller
+    provider_name:
+      example: "ruleset"
+      required: true
+      # 兜底为文本框；集成加载后由 async_set_service_schema 覆盖为动态下拉
+      selector:
+        text:
+
+update_proxy_provider_service:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: kitty_controller
+    provider_name:
+      example: "airport"
+      required: true
+      selector:
+        text:
+
+healthcheck_provider_service:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: kitty_controller
+    provider_name:
+      example: "airport"
+      required: true
+      selector:
+        text:

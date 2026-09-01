@@ -1,0 +1,13 @@
+{
+    "domain": "kitty_controller",
+    "name": "KittY Controller",
+    "codeowners": ["@PraxiGEN"],
+    "config_flow": true,
+    "dependencies": [],
+    "documentation": "https://github.com/PraxiGEN/ha_kitty_controller",
+    "integration_type": "hub",
+    "iot_class": "cloud_polling",
+    "issue_tracker": "https://github.com/PraxiGEN/ha_kitty_controller/issues",
+    "requirements": [],
+    "version": "1.0.0"
+}
