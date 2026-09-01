@@ -1,0 +1,318 @@
+{
+  "title": "Kitty Controller",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kitty Controller Setup",
+        "description": "Enter the API address and token for your Kitty instance. Examples: 192.168.1.1:9090, kitty.mydomain.com. If the location is an IP address, make sure it's static.",
+        "data": {
+          "api_url": "API",
+          "bearer_token": "Token",
+          "use_ssl": "Use HTTPS",
+          "allow_unsafe": "Allow Unsafe SSL Certificates",
+          "device_name": "Device name (default: Hajimi)"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Kitty Connection",
+        "description": "Please update the connection settings or credentials for this Kitty instance.",
+        "data": {
+          "api_url": "API URL",
+          "bearer_token": "Secret Token (Secret)",
+          "use_ssl": "Use SSL",
+          "allow_unsafe": "Allow Unsafe Certificates",
+          "device_name": "Device name (default: Hajimi)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the API. Verify the address and try again.",
+      "invalid_token": "The provided API token is invalid. Please check and try again.",
+      "unknown": "An unexpected error occurred. Please try again later.",
+      "timed_out": "API connection timed out. Is Kitty running?"
+    },
+    "abort": {
+      "already_configured": "The instance at this location is already added. Use configure button to update token and modify settings.",
+      "reconfigure_successful": "Reconfiguration successful."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Kitty Controller Options",
+        "description": "Modify options of this entry. To detect streaming service availability, Home Assistant must connect through the same proxy being tested.",
+        "data": {
+          "scan_interval": "Scan Interval (seconds)",
+          "bearer_token": "Update Bearer Token (Leave empty to skip)",
+          "streaming_detection": "Enable Streaming Service Availability Detection",
+          "default_groups": "Extra groups enabled by default (keywords, comma-separated)"
+        }
+      }
+    },
+    "error": {
+      "invalid_token": "The provided API token is invalid. Please check and try again."
+    }
+  },
+  "entity": {
+    "button": {
+      "flush_cache": {
+        "name": "Flush FakeIP Cache",
+        "notification": "FakeIP cache flushed",
+        "notification_failed": "Failed to flush FakeIP cache"
+      },
+      "flush_dns_cache": {
+        "name": "Flush DNS Cache",
+        "notification": "DNS cache flushed",
+        "notification_failed": "Failed to flush DNS cache"
+      },
+      "upgrade_core": {
+        "name": "Upgrade Core",
+        "notification": "Core upgrade started, Kitty will restart briefly",
+        "notification_failed": "Core upgrade failed"
+      },
+      "upgrade_geo": {
+        "name": "Upgrade GEO Databases",
+        "notification": "GEO database upgrade started",
+        "notification_failed": "GEO database upgrade failed"
+      }
+    },
+    "select": {
+      "core_mode": {
+        "name": "Proxy Mode",
+        "state": {
+          "rule": "Rule",
+          "global": "Global",
+          "direct": "Direct",
+          "script": "Script"
+        }
+      }
+    },
+    "sensor": {
+      "up_speed": {
+        "name": "Upload Speed"
+      },
+      "down_speed": {
+        "name": "Download Speed"
+      },
+      "up_traffic": {
+        "name": "Upload Traffic"
+      },
+      "down_traffic": {
+        "name": "Download Traffic"
+      },
+      "memory_used": {
+        "name": "Memory Used"
+      },
+      "connection_number": {
+        "name": "Connection Number"
+      },
+      "proxy_provider_count": {
+        "name": "Proxy Provider Count"
+      },
+      "rule_provider_count": {
+        "name": "Rule Provider Count"
+      },
+      "core_update": {
+        "name": "Core Update Check",
+        "state": {
+          "up_to_date": "Up to date",
+          "checking": "Checking"
+        },
+        "state_attributes": {
+          "current_version": { "name": "Current Version" },
+          "latest_version": { "name": "Latest Version" },
+          "published_at": { "name": "Published At" },
+          "is_meta": { "name": "Is Meta" }
+        }
+      },
+      "netflix_service": {
+        "name": "Netflix",
+        "state": {
+          "unlocked": "Unlocked",
+          "blocked": "Blocked",
+          "original_only": "Original Only"
+        },
+        "state_attributes": {
+          "latency": {
+            "name": "Latency"
+          },
+          "status_code": {
+            "name": "Status Code"
+          }
+        }
+      }
+    }
+  },
+  "services": {
+    "reboot_core_service": {
+      "name": "Reboot Kitty Core",
+      "description": "Reboot the core of the remote Kitty instance.",
+      "fields": {
+        "device_id": {
+          "name": "Instance",
+          "description": "Select the target instance"
+        }
+      }
+    },
+    "filter_connection_service": {
+      "name": "Filter Connection",
+      "description": "Retrieve and optionally close active connections using keyword filters. Separate multiple keywords with comma \",\". Keywords are case-insensitive.",
+      "fields": {
+        "device_id": {
+          "name": "Instance",
+          "description": "Select the target instance"
+        },
+        "close_connection": {
+          "name": "Close Connection",
+          "description": "If enabled, retrieved connections will also be closed"
+        },
+        "host": {
+          "name": "Host",
+          "description": "Filter by host"
+        },
+        "src_hostname": {
+          "name": "Source IP",
+          "description": "Filter by source IP"
+        },
+        "des_hostname": {
+          "name": "Destination IP",
+          "description": "Filter by destination IP"
+        }
+      }
+    },
+    "get_latency_service": {
+      "name": "Get Latency",
+      "description": "Get the latency of a specified node or group. Only one field should be provided at a time. A 504 error may occur if the URL is misconfigured or the request times out.",
+      "fields": {
+        "device_id": {
+          "name": "Instance",
+          "description": "Select the target instance"
+        },
+        "group": {
+          "name": "Group Name",
+          "description": "The proxy group name. Testing a group will also clear its fixed option if set"
+        },
+        "node": {
+          "name": "Node Name",
+          "description": "The proxy node name"
+        },
+        "url": {
+          "name": "URL",
+          "description": "The URL used to test the latency"
+        },
+        "timeout": {
+          "name": "Timeout",
+          "description": "Connection timeout in milliseconds"
+        }
+      }
+    },
+    "dns_query_service": {
+      "name": "DNS Query",
+      "description": "Perform a DNS query with Kitty.",
+      "fields": {
+        "device_id": {
+          "name": "Instance",
+          "description": "Select the target instance"
+        },
+        "domain_name": {
+          "name": "Domain Name",
+          "description": "The domain name to query"
+        },
+        "record_type": {
+          "name": "Record Type",
+          "description": "The record type to query. Leave empty to get IPv4 (A) record"
+        }
+      }
+    },
+    "get_rule_service": {
+      "name": "Get Rule",
+      "description": "Get rules using keyword filters.",
+      "fields": {
+        "device_id": {
+          "name": "Instance",
+          "description": "Select the target instance"
+        },
+        "rule_type": {
+          "name": "Type",
+          "description": "The type of the rule"
+        },
+        "rule_payload": {
+          "name": "Payload",
+          "description": "The payload to match"
+        },
+        "rule_proxy": {
+          "name": "Proxy",
+          "description": "The proxy method used"
+        }
+      }
+    },
+    "api_call_service": {
+      "name": "API Call",
+      "description": "Perform a general API call to Kitty and optionally retrieve response.",
+      "fields": {
+        "device_id": {
+          "name": "Instance",
+          "description": "Select the target instance"
+        },
+        "api_endpoint": {
+          "name": "Endpoint",
+          "description": "The API endpoint to be used"
+        },
+        "api_method": {
+          "name": "Method",
+          "description": "The HTTP method (GET, POST, etc.)"
+        },
+        "api_params": {
+          "name": "Parameters",
+          "description": "The query parameters for the request. Needs to be a valid json string"
+        },
+        "api_data": {
+          "name": "Payload",
+          "description": "The json body sent in the request. Needs to be a valid json string"
+        }
+      }
+    },
+    "update_rule_provider_service": {
+      "name": "Update Rule Provider",
+      "description": "Trigger the specified rule provider to re-fetch its subscription (PUT /providers/rules/<name>).",
+      "fields": {
+        "device_id": {
+          "name": "Instance",
+          "description": "Select the target instance"
+        },
+        "provider_name": {
+          "name": "Rule Provider Name",
+          "description": "The rule provider to update"
+        }
+      }
+    },
+    "update_proxy_provider_service": {
+      "name": "Update Proxy Provider",
+      "description": "Trigger the specified proxy provider to re-fetch its subscription (PUT /providers/proxies/<name>).",
+      "fields": {
+        "device_id": {
+          "name": "Instance",
+          "description": "Select the target instance"
+        },
+        "provider_name": {
+          "name": "Proxy Provider Name",
+          "description": "The proxy provider to update"
+        }
+      }
+    },
+    "healthcheck_provider_service": {
+      "name": "Healthcheck Proxy Provider",
+      "description": "Trigger a health check for all nodes of the specified proxy provider and return each node's alive state and latest latency.",
+      "fields": {
+        "device_id": {
+          "name": "Instance",
+          "description": "Select the target instance"
+        },
+        "provider_name": {
+          "name": "Proxy Provider Name",
+          "description": "The proxy provider to test, using its own configured test URL"
+        }
+      }
+    }
+  }
+}
