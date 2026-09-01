@@ -49,9 +49,6 @@ async def async_unload_entry(hass: HomeAssistant, entry: KittyConfigEntry) -> bo
         return unload_ok
 
     # 卸载单个条目后，若仍有其余实例在运行，用剩余协调器刷新服务下拉，
-    # 避免刚卸载实例的代理集合名残留在更新订阅/健康检查的下拉选项中。
-    # 注意：当前条目在 async_unload_entry 返回前 runtime_data 仍在、
-    # async_entries(DOMAIN) 也仍包含它，故须用 entry_id 排除自身。
     others = [
         config_entry
         for config_entry in hass.config_entries.async_entries(DOMAIN)

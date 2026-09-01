@@ -110,11 +110,7 @@ class KittyButtonEntity(BaseEntity, ButtonEntity):
             await self._send_notification(success=True)
 
     async def _send_notification(self, success: bool, error: str | None = None) -> None:
-        """从翻译文件动态抓取消息并发送持久通知。
-
-        成功与失败分别读取 translation_key 下的 notification / notification_failed
-        翻译键；键缺失时回退到「{实体名} 已完成 / 失败」的通用文案。
-        """
+        """从翻译文件动态抓取消息并发送持久通知。"""
         lang = self.hass.config.language
         translations = await translation.async_get_translations(
             self.hass, lang, "entity", [DOMAIN]

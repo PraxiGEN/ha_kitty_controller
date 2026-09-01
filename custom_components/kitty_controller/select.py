@@ -58,7 +58,6 @@ def _is_default_enabled_group(name: str, coordinator: KittyControllerCoordinator
     lowered = name.lower()
     return any(k in lowered for k in keywords)
 
-
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: KittyConfigEntry,

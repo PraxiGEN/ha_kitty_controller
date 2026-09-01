@@ -14,7 +14,6 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 _LOGGER = logging.getLogger(__name__)
 
 # 协调器每轮轮询的固定端点：(数据键, 端点路径)，全部为 GET
-# version 必须纳入轮询：_assemble_data 据此填充 version/meta
 _POLL_ENDPOINTS: tuple[tuple[str, str], ...] = (
     ("version", "version"),
     ("traffic", "traffic"),
@@ -25,15 +24,12 @@ _POLL_ENDPOINTS: tuple[tuple[str, str], ...] = (
     ("providers_proxies", "providers/proxies"),
     ("providers_rules", "providers/rules"),
 )
-
 # 流式子端点：/traffic 与 /memory 每秒推送一帧、连接保持打开不以 EOF 结束，
 # 不能用 response.json() 整体解析（会读到超时），改用 _fetch_stream_sample 取首帧
 _STREAM_ENDPOINTS: frozenset[str] = frozenset({"traffic", "memory"})
-
 # 部分 POST 端点（如 restart、upgrade）要求携带此空请求体
 RESTART_BODY: dict[str, str] = {"path": "", "payload": ""}
-
-# 流媒体解锁探测服务表（功能扩展，非兼容代码）
+# 流媒体解锁探测服务表
 SERVICE_TABLE: dict[str, dict[str, Any]] = {
     "netflix": {
         "name": "Netflix",
@@ -47,7 +43,6 @@ SERVICE_TABLE: dict[str, dict[str, Any]] = {
         },
     },
 }
-
 # 内核 REST API 无"检查更新"端点，版本对比只能走 GitHub 官方接口；
 # 无 token 配额 60 次/小时，协调器按 6 小时间隔查询一次，远低于配额。
 GITHUB_LATEST_RELEASE_URL: str = (
@@ -100,10 +95,7 @@ class KittyAPI:
         params: dict[str, Any] | None = None,
         json_data: dict[str, Any] | None = None,
     ) -> Any:
-        """发起请求，返回解析后的 JSON（204 空响应返回 None）。
-
-        失败抛出类型化 API* 异常，不吞错（由调用方决定如何呈现）。
-        """
+        """发起请求，返回解析后的 JSON（204 空响应返回 None）。"""
         url = f"{self.host}{endpoint}"
         _LOGGER.debug("小猫咪 API %s %s", method, url)
         try:
@@ -158,11 +150,7 @@ class KittyAPI:
         }
 
     async def fetch_data(self, streaming_detection: bool = False) -> dict[str, Any]:
-        """并发拉取全部轮询端点并组装为键值字典。
-
-        普通端点走 async_request；流式子端点走 _fetch_stream_sample 取首帧。
-        单个端点失败单独跳过（debug 记录），不影响整体更新。
-        """
+        """并发拉取全部轮询端点并组装为键值字典。"""
         tasks = []
         for key, endpoint in _POLL_ENDPOINTS:
             if key in _STREAM_ENDPOINTS:
@@ -182,12 +170,7 @@ class KittyAPI:
         return data
 
     async def _fetch_stream_sample(self, endpoint: str) -> dict[str, Any]:
-        """读取流式子端点（/traffic、/memory）的最新一帧。
-
-        关键坑：/memory 首帧固定是 {"inuse":0,"oslimit":0} 占位帧，真实值从
-        第二帧开始，因此连读最多 4 帧、跳过 inuse 为 0 的帧；/traffic 帧不含
-        inuse 字段，首帧即真实值。总超时 10s，避免挂起整个轮询。
-        """
+        """读取流式子端点（/traffic、/memory）的最新一帧。"""
         url = f"{self.host}{endpoint}"
         _LOGGER.debug("小猫咪流式采样 %s", url)
         try:

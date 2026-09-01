@@ -12,7 +12,6 @@ if TYPE_CHECKING:
 
 _LOGGER = logging.getLogger(__name__)
 
-
 class BaseEntity(CoordinatorEntity):
     """所有实体的公共基类：处理设备归属与唯一 ID 前缀。"""
 

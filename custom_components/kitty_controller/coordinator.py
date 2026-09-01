@@ -29,10 +29,7 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 def slugify(value: str) -> str:
-    """转安全 ID 片段：保留中文与 ASCII 字母数字，其余替换为下划线。
-
-    纯符号/emoji 输入回退为内容短哈希，保证非空唯一。
-    """
+    """转安全 ID 片段：保留中文与 ASCII 字母数字，其余替换为下划线。"""
     slug = re.sub(r"[^\w]+", "_", value.lower().replace(" ", "_")).strip("_")
     if not slug:
         slug = hashlib.md5(value.encode("utf-8")).hexdigest()[:10]
@@ -42,7 +39,6 @@ def slugify(value: str) -> str:
 DEFAULT_ENABLED_GROUP_KEYWORDS: frozenset[str] = frozenset(
     {"global", "自动", "选择", "漏网", "direct"}
 )
-
 # 核心版本检查间隔（GitHub API 无 token 配额 60 次/小时，6 小时查一次足够）
 UPDATE_CHECK_INTERVAL: timedelta = timedelta(hours=6)
 

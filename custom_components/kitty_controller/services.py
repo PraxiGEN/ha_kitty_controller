@@ -95,13 +95,7 @@ API_CALL_SCHEMA = vol.Schema({
 async def async_setup_services(
     hass: HomeAssistant, coordinators: list[KittyControllerCoordinator] | None = None
 ) -> None:
-    """注册集成服务。
-
-    coordinators：已就绪实例的协调器列表。传入后 provider_name 参数会构建为
-    动态下拉选项（vol.In），由前端渲染成选择框；不传或数据未就绪时退回自由文本。
-    实例就绪后应再次调用本函数以覆盖注册，刷新下拉选项。
-    """
-
+    """注册集成服务。"""
     # --- 动态选项：收集所有已就绪协调器的 provider 名称，供服务下拉选择 ---
     proxy_providers: set[str] = set()
     rule_providers: set[str] = set()
@@ -280,12 +274,7 @@ async def async_setup_services(
         return {"provider": name}
 
     async def handle_healthcheck_provider(call: ServiceCall) -> ServiceResponse:
-        """触发代理集合整体健康检查并回读各节点延迟。
-
-        mihomo 的 healthcheck 端点为同步触发：HealthCheck() 内部等全部节点
-        测速完成后才返回 204，因此随后回读 providers/proxies/{name} 的节点
-        history 即为本次结果，无需额外等待。
-        """
+        """触发代理集合整体健康检查并回读各节点延迟。"""
         coordinator = _get_coordinator(call.data[CONF_DEVICE_ID])
         name = call.data[ATTR_PROVIDER_NAME].strip()
         if not name:
@@ -370,10 +359,6 @@ async def async_setup_services(
     )
 
     # 动态写入服务 UI 字段描述（含 provider_name 下拉选项）。
-    # 关键：HA 前端服务表单的字段列表只来自 services.yaml 的 fields 或
-    # async_set_service_schema 写入的缓存（缓存优先），与 voluptuous schema 无关——
-    # schema 里的 vol.In 只做调用时校验，不参与 UI 渲染。因此运行时必须用
-    # async_set_service_schema 把动态 select 选择器注入缓存，前端才会显示下拉。
     provider_fields = {
         "device_id": {"selector": {"device": {"integration": DOMAIN}}},
         "provider_name": {"selector": provider_selector_desc},
