@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 import re
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Callable
+from typing import Any, Callable
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -20,9 +20,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .api import SERVICE_TABLE
 from .base import BaseEntity
 from .coordinator import KittyControllerCoordinator, KittyData, slugify
-
-if TYPE_CHECKING:
-    from . import KittyConfigEntry
+from .types import KittyConfigEntry
 
 _LOGGER = logging.getLogger(__name__)
 

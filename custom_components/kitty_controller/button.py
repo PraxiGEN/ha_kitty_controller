@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Final
+from typing import Final
 
 from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.core import HomeAssistant
@@ -16,9 +16,7 @@ from .api import RESTART_BODY
 from .base import BaseEntity
 from .const import DOMAIN
 from .coordinator import KittyControllerCoordinator
-
-if TYPE_CHECKING:
-    from . import KittyConfigEntry
+from .types import KittyConfigEntry
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -110,28 +108,25 @@ class KittyButtonEntity(BaseEntity, ButtonEntity):
             await self._send_notification(success=True)
 
     async def _send_notification(self, success: bool, error: str | None = None) -> None:
-        """从翻译文件动态抓取消息并发送持久通知。"""
+        """发送按钮动作结果的持久通知。"""
         lang = self.hass.config.language
         translations = await translation.async_get_translations(
-            self.hass, lang, "entity", [DOMAIN]
+            self.hass, lang, "services", [DOMAIN]
         )
-        key = self.entity_description.key
-        name = translations.get(
-            f"component.{DOMAIN}.entity.button.{key}.name", key
-        )
+        action_key = self.entity_description.translation_key
+        base = f"component.{DOMAIN}.services.{action_key}"
+        action_name = translations.get(f"{base}.name", action_key)
         if success:
-            msg_key = f"component.{DOMAIN}.entity.button.{key}.notification"
-            message = translations.get(msg_key, f"{name} 已完成")
+            message = translations.get(f"{base}.description", f"{action_name} 已完成")
         else:
-            msg_key = f"component.{DOMAIN}.entity.button.{key}.notification_failed"
-            message = translations.get(msg_key, f"{name} 失败：{error or '未知错误'}")
+            message = f"{action_name}失败：{error or '未知错误'}"
         await self.hass.services.async_call(
             "persistent_notification",
             "create",
             {
                 "title": "小猫咪控制器",
                 "message": message,
-                "notification_id": f"{DOMAIN}_{key}",
+                "notification_id": f"{DOMAIN}_{self.entity_description.key}",
             },
             blocking=False,
         )

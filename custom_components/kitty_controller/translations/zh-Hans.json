@@ -56,24 +56,16 @@
   "entity": {
     "button": {
       "flush_cache": {
-        "name": "清除 FakeIP 缓存",
-        "notification": "已清除 FakeIP 缓存",
-        "notification_failed": "清除 FakeIP 缓存失败"
+        "name": "清除 FakeIP 缓存"
       },
       "flush_dns_cache": {
-        "name": "清除 DNS 缓存",
-        "notification": "已清除 DNS 缓存",
-        "notification_failed": "清除 DNS 缓存失败"
+        "name": "清除 DNS 缓存"
       },
       "upgrade_core": {
-        "name": "升级内核",
-        "notification": "已发起内核升级，小猫咪将短暂重启",
-        "notification_failed": "内核升级失败"
+        "name": "升级内核"
       },
       "upgrade_geo": {
-        "name": "升级 GEO 数据库",
-        "notification": "已发起 GEO 数据库升级",
-        "notification_failed": "GEO 数据库升级失败"
+        "name": "升级 GEO 数据库"
       }
     },
     "select": {
@@ -274,7 +266,7 @@
     },
     "update_rule_provider_service": {
       "name": "更新规则集合",
-      "description": "触发指定规则集合重新拉取订阅内容（PUT /providers/rules/<名称>）。",
+      "description": "触发指定规则集合重新拉取订阅内容（PUT /providers/rules/{名称}）。",
       "fields": {
         "device_id": {
           "name": "实例",
@@ -288,7 +280,7 @@
     },
     "update_proxy_provider_service": {
       "name": "更新订阅",
-      "description": "触发指定代理集合重新拉取订阅内容（PUT /providers/proxies/<名称>）。",
+      "description": "触发指定代理集合重新拉取订阅内容（PUT /providers/proxies/{名称}）。",
       "fields": {
         "device_id": {
           "name": "实例",
@@ -313,6 +305,22 @@
           "description": "要测试的代理集合名称，使用集合自身配置的测速地址"
         }
       }
+    },
+    "flush_cache": {
+      "name": "清除 FakeIP 缓存",
+      "description": "已清除 FakeIP 缓存"
+    },
+    "flush_dns_cache": {
+      "name": "清除 DNS 缓存",
+      "description": "已清除 DNS 缓存"
+    },
+    "upgrade_core": {
+      "name": "升级内核",
+      "description": "已发起内核升级，小猫咪将短暂重启"
+    },
+    "upgrade_geo": {
+      "name": "升级 GEO 数据库",
+      "description": "已发起 GEO 数据库升级"
     }
   }
 }

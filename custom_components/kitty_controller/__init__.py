@@ -3,25 +3,19 @@
 from __future__ import annotations
 
 import logging
-from dataclasses import dataclass
 
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import config_validation as cv
 
 from .const import DOMAIN, PLATFORMS
-from .api import KittyAPI
 from .coordinator import KittyControllerCoordinator
 from .services import async_setup_services
+from .types import KittyConfigEntry, KittyRuntimeData
 
 _LOGGER = logging.getLogger(__name__)
 
-@dataclass
-class KittyRuntimeData:
-    """持有集成运行期数据。"""
-    coordinator: KittyControllerCoordinator
-    api: KittyAPI
-
-type KittyConfigEntry = ConfigEntry[KittyRuntimeData]
+# 本集成仅通过配置流设置，无 YAML 配置参数
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     """集成加载时全局注册服务。"""

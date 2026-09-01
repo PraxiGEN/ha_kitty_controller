@@ -2,13 +2,11 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING
 
 from homeassistant.core import callback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-if TYPE_CHECKING:
-    from .coordinator import KittyControllerCoordinator
+from .coordinator import KittyControllerCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 

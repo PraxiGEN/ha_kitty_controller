@@ -56,24 +56,16 @@
   "entity": {
     "button": {
       "flush_cache": {
-        "name": "Flush FakeIP Cache",
-        "notification": "FakeIP cache flushed",
-        "notification_failed": "Failed to flush FakeIP cache"
+        "name": "Flush FakeIP Cache"
       },
       "flush_dns_cache": {
-        "name": "Flush DNS Cache",
-        "notification": "DNS cache flushed",
-        "notification_failed": "Failed to flush DNS cache"
+        "name": "Flush DNS Cache"
       },
       "upgrade_core": {
-        "name": "Upgrade Core",
-        "notification": "Core upgrade started, Kitty will restart briefly",
-        "notification_failed": "Core upgrade failed"
+        "name": "Upgrade Core"
       },
       "upgrade_geo": {
-        "name": "Upgrade GEO Databases",
-        "notification": "GEO database upgrade started",
-        "notification_failed": "GEO database upgrade failed"
+        "name": "Upgrade GEO Databases"
       }
     },
     "select": {
@@ -274,7 +266,7 @@
     },
     "update_rule_provider_service": {
       "name": "Update Rule Provider",
-      "description": "Trigger the specified rule provider to re-fetch its subscription (PUT /providers/rules/<name>).",
+      "description": "Trigger the specified rule provider to re-fetch its subscription (PUT /providers/rules/{name}).",
       "fields": {
         "device_id": {
           "name": "Instance",
@@ -288,7 +280,7 @@
     },
     "update_proxy_provider_service": {
       "name": "Update Proxy Provider",
-      "description": "Trigger the specified proxy provider to re-fetch its subscription (PUT /providers/proxies/<name>).",
+      "description": "Trigger the specified proxy provider to re-fetch its subscription (PUT /providers/proxies/{name}).",
       "fields": {
         "device_id": {
           "name": "Instance",
@@ -313,6 +305,22 @@
           "description": "The proxy provider to test, using its own configured test URL"
         }
       }
+    },
+    "flush_cache": {
+      "name": "Flush FakeIP Cache",
+      "description": "FakeIP cache flushed"
+    },
+    "flush_dns_cache": {
+      "name": "Flush DNS Cache",
+      "description": "DNS cache flushed"
+    },
+    "upgrade_core": {
+      "name": "Upgrade Core",
+      "description": "Core upgrade started, Kitty will restart briefly"
+    },
+    "upgrade_geo": {
+      "name": "Upgrade GEO Databases",
+      "description": "GEO database upgrade started"
     }
   }
 }

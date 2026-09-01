@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Callable
+from typing import Any, Callable
 from urllib.parse import quote
 
 from homeassistant.components.select import SelectEntity, SelectEntityDescription
@@ -18,9 +18,7 @@ from .coordinator import (
     DEFAULT_ENABLED_GROUP_KEYWORDS,
     slugify,
 )
-
-if TYPE_CHECKING:
-    from . import KittyConfigEntry
+from .types import KittyConfigEntry
 
 _LOGGER = logging.getLogger(__name__)
 
