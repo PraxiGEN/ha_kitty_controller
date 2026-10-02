@@ -266,7 +266,7 @@
     },
     "update_rule_provider_service": {
       "name": "Update Rule Provider",
-      "description": "Trigger the specified rule provider to re-fetch its subscription (PUT /providers/rules/{name}).",
+      "description": "Trigger the specified rule provider to re-fetch its subscription ({endpoint}).",
       "fields": {
         "device_id": {
           "name": "Instance",
@@ -280,7 +280,7 @@
     },
     "update_proxy_provider_service": {
       "name": "Update Proxy Provider",
-      "description": "Trigger the specified proxy provider to re-fetch its subscription (PUT /providers/proxies/{name}).",
+      "description": "Trigger the specified proxy provider to re-fetch its subscription ({endpoint}).",
       "fields": {
         "device_id": {
           "name": "Instance",

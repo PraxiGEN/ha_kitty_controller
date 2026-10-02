@@ -345,12 +345,14 @@ async def async_setup_services(
 
     hass.services.async_register(
         DOMAIN, UPDATE_RULE_PROVIDER_SERVICE_NAME, handle_update_rule_provider,
-        schema=update_rule_provider_schema, supports_response=SupportsResponse.OPTIONAL
+        schema=update_rule_provider_schema, supports_response=SupportsResponse.OPTIONAL,
+        description_placeholders={"endpoint": "PUT /providers/rules/{name}"}
     )
 
     hass.services.async_register(
         DOMAIN, UPDATE_PROXY_PROVIDER_SERVICE_NAME, handle_update_proxy_provider,
-        schema=update_proxy_provider_schema, supports_response=SupportsResponse.OPTIONAL
+        schema=update_proxy_provider_schema, supports_response=SupportsResponse.OPTIONAL,
+        description_placeholders={"endpoint": "PUT /providers/proxies/{name}"}
     )
 
     hass.services.async_register(
