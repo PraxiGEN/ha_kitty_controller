@@ -63,6 +63,12 @@ class KittyControllerConfigFlow(ConfigFlow, domain=DOMAIN):
             api_url += '/'
         return api_url
 
+    @staticmethod
+    def _entry_title(api_url: str) -> str:
+        """条目标题 = 接入地址+端口（yarl 缺省端口回退 scheme 默认值，恒非空）。"""
+        url = URL(api_url)
+        return f"{url.host}:{url.port}"
+
     async def _test_connection(self, api: KittyAPI) -> dict[str, str]:
         """公用连接测试逻辑。"""
         errors = {}
@@ -99,9 +105,7 @@ class KittyControllerConfigFlow(ConfigFlow, domain=DOMAIN):
             errors = await self._test_connection(api)
             if not errors:
 
-                return self.async_create_entry(
-                    title=f"KittY ({URL(api_url).host})", data=user_input
-                )
+                return self.async_create_entry(title=self._entry_title(api_url), data=user_input)
 
         # 设备名称置于最顶部（默认"哈基咪"，可改），其余为连接参数
         data_schema = vol.Schema({
@@ -124,6 +128,12 @@ class KittyControllerConfigFlow(ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
         if user_input is not None:
             api_url = self._normalize_url(user_input[CONF_API_URL], user_input.get(CONF_USE_SSL, False))
+            # unique_id 由 api_url 派生：地址变了才做冲突检查（_abort_if_unique_id_configured
+            # 不排除本条目，未改地址时查表会命中自己导致误 abort）
+            new_unique_id = re.sub(r"[^a-zA-Z0-9]", "_", api_url)
+            if new_unique_id != entry.unique_id:
+                await self.async_set_unique_id(new_unique_id)
+                self._abort_if_unique_id_configured()
             api = KittyAPI(
                 self.hass,
                 api_url,
@@ -134,7 +144,9 @@ class KittyControllerConfigFlow(ConfigFlow, domain=DOMAIN):
             if not errors:
                 return self.async_update_reload_and_abort(
                     entry,
-                    data={**entry.data, **user_input, CONF_API_URL: api_url}
+                    title=self._entry_title(api_url),
+                    data={**entry.data, **user_input, CONF_API_URL: api_url},
+                    unique_id=new_unique_id,
                 )
 
         # 预填当前数据（设备名称置于最顶部，与初始配置保持一致）
