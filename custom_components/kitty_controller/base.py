@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import logging
 
-from homeassistant.core import callback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .coordinator import KittyControllerCoordinator
@@ -21,8 +20,3 @@ class BaseEntity(CoordinatorEntity):
         super().__init__(coordinator)
         self._entry_id = entry_id
         self._attr_device_info = coordinator.device_info
-
-    @callback
-    def _handle_coordinator_update(self) -> None:
-        """协调器刷新后重写状态。"""
-        self.async_write_ha_state()
