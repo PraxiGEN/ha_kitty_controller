@@ -139,7 +139,8 @@ async def async_setup_services(
         if not device:
             raise HomeAssistantError(f"未找到 ID 为 {device_id} 的设备")
 
-        entry_id = next(iter(device.config_entries), None)
+        # config_entry_id 是官方替代 device.config_entries 弃用 shim 的单条目属性
+        entry_id = device.config_entry_id
         if not entry_id:
             raise HomeAssistantError(f"设备 {device_id} 没有关联的配置条目")
 
