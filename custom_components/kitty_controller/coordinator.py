@@ -81,7 +81,6 @@ class KittyControllerCoordinator(DataUpdateCoordinator[KittyData]):
         self.host = config_entry.data["api_url"]
         self.token = config_entry.data["bearer_token"]
         self.allow_unsafe = config_entry.data.get("allow_unsafe", False)
-        self.config_entry = config_entry
         self.entry_id = config_entry.entry_id
         self.poll_interval = config_entry.options.get(
             CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL
@@ -113,6 +112,7 @@ class KittyControllerCoordinator(DataUpdateCoordinator[KittyData]):
         super().__init__(
             hass,
             _LOGGER,
+            config_entry=config_entry,
             name=self.device_name,
             update_method=self._async_update_data,
             update_interval=timedelta(seconds=self.poll_interval),
